@@ -33,6 +33,6 @@ type hashInterface interface {
 }
 
 // HashBytes returns a hash of a big integer given a hash policy.
-func HashBytes(hp hashInterface, s *big.Int) *big.Int {
+func Hash(hp hashInterface, s *big.Int) *big.Int {
 	return s.SetBytes(hp.HashBytes(s.Bytes()))
 }

@@ -16,8 +16,8 @@
 
 package protobuf
 
-type NodeID struct {
+type ID struct {
 	PublicKey []byte
 	Address   string
-	ID        []byte
+	Id        []byte
 }
