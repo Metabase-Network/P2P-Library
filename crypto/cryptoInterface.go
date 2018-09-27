@@ -16,6 +16,8 @@
 
 package crypto
 
+import "math/big"
+
 type cryptoInterface interface {
 	generateKey() ([]byte, []byte, error)
 	PrivateKeySize() int
@@ -24,5 +26,13 @@ type cryptoInterface interface {
 	Sign(privateKey []byte, message []byte) []byte
 	RandomKeyPair() *KeyPair
 	Verify(publicKey []byte, message []byte, signature []byte) bool
+}
+
+type hashInterface interface {
 	HashBytes(b []byte) []byte
+}
+
+// HashBytes returns a hash of a big integer given a hash policy.
+func HashBytes(hp hashInterface, s *big.Int) *big.Int {
+	return s.SetBytes(hp.HashBytes(s.Bytes()))
 }

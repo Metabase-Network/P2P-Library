@@ -23,7 +23,7 @@ import (
 )
 
 var (
-	_ crypto.cryptoInterface = (*hash)(nil)
+	_ crypto.hashInterface = (*HashBytes)(nil)
 )
 
 func New() *hash {
@@ -32,9 +32,9 @@ func New() *hash {
 
 // HashBytes hashes the given bytes using the blakle2b hash algorithm.
 
-func Hash(bytes []byte) []byte {
+func HashBytes(bytes []byte) []byte {
 	src := blake2b.Sum256(bytes)
-	return src
+	return hash[:]
 }
 
 /*

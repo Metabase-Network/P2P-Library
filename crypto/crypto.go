@@ -30,12 +30,12 @@ var (
 	PrivateKeySizeErr = errors.New("private key length does not equal expected key length")
 )
 
-func (k *KeyPair) Sign(ci cryptoInterface, message []byte) ([]byte, error) {
+func (k *KeyPair) Sign(ci cryptoInterface, hi hashInterface, message []byte) ([]byte, error) {
 	if len(k.PrivateKey) != ci.PrivateKeySize() {
 		return nil, PrivateKeySizeErr
 	}
 
-	message = ci.HashBytes(message)
+	message = hi.HashBytes(message)
 
 	signature := ci.Sign(k.PrivateKey, message)
 	return signature, nil
@@ -85,12 +85,12 @@ func fromPrivateKeyBytes(ci cryptoInterface, rawPrivateKey []byte) (*KeyPair, er
 }
 
 // Verify returns true if the given signature was generated using the given public key, message, signature policy, and hash policy.
-func Verify(ci cryptoInterface, publicKey []byte, message []byte, signature []byte) bool {
+func Verify(ci cryptoInterface, hi hashInterface, publicKey []byte, message []byte, signature []byte) bool {
 	// Public key must be a set size.
 	if len(publicKey) != ci.PublicKeySize() {
 		return false
 	}
 
-	message = ci.HashBytes(message)
+	message = hi.HashBytes(message)
 	return ci.Verify(publicKey, message, signature)
 }
