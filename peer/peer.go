@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"math/bits"
 
-	"github.com/Metabase-Network/vasuki/crypto"
+	"github.com/Metabase-Network/vasuki/crypto/hash"
 )
 
 // ID is an identity of nodes, using its public key hash and network address.
@@ -34,7 +34,7 @@ type ID struct {
 
 // CreateID is a factory function creating ID.
 func CreateID(address string, publicKey []byte) ID {
-	return ID{Address: address, PublicKey: publicKey, Id: crypto.HashBytes(publicKey)}
+	return ID{Address: address, PublicKey: publicKey, Id: hash.new().HashBytes(publicKey)}
 }
 
 // String returns the identity address and public key.
