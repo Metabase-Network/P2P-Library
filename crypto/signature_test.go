@@ -22,9 +22,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/common/math"
+	"github.com/Metabase-Network/vasuki/common"
+	"github.com/Metabase-Network/vasuki/common/hexutil"
+	"github.com/Metabase-Network/vasuki/common/math"
 )
 
 var (
