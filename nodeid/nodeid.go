@@ -14,4 +14,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package dht
+package main
+
+import (
+	"fmt"
+
+	crt "github.com/Metabase-Network/vasuki/crypto"
+)
+
+func main() {
+
+	fmt.Println(crt.GenerateKey())
+}

@@ -1,4 +1,4 @@
-module github.com/Metabase-Network/vasuki/crypto
+module github.com/Metabase-Network/vasuki
 
 require (
 	github.com/pkg/errors v0.8.0
