@@ -15,3 +15,11 @@
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
 package nodeid
+
+import (
+	"fmt"
+)
+
+func test() {
+	fmt.Println("This is test")
+}
