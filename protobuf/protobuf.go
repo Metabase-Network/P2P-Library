@@ -21,3 +21,10 @@ type ID struct {
 	Address   string
 	Id        []byte
 }
+
+type Message struct {
+	from    []byte
+	to      []byte
+	msgType []byte
+	message []byte
+}
