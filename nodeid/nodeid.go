@@ -14,15 +14,44 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package main
+package node
 
 import (
-	"fmt"
+	"crypto/ecdsa"
+	"errors"
 
-	crt "github.com/Metabase-Network/vasuki/crypto"
+	"github.com/Metabase-Network/vasuki/common"
+	"github.com/Metabase-Network/vasuki/crypto"
 )
 
-func main() {
+var errInvalidPubkey = errors.New("Error Generating Key for Node ")
+var node Node
 
-	fmt.Println(crt.GenerateKey())
+type Node struct {
+	NodeId     []byte
+	NodeAddr   []byte
+	NodePubKey ecdsa.PublicKey
+	NodePvkKey *ecdsa.PrivateKey
+}
+
+func InitNode(hex string) (Node, error) {
+	res, err := setPrivateKey(hex)
+	if err != nil {
+		return Node{}, err
+	}
+	node = Node{NodePvkKey: res, NodePubKey: res.PublicKey, NodeAddr: CalcNodeAddr(res.PublicKey).Bytes(), NodeId: CalcNodeID(CalcNodeAddr(res.PublicKey))}
+	return node, nil
+}
+
+func setPrivateKey(hexkey string) (*ecdsa.PrivateKey, error) {
+	res, err := crypto.HexToECDSA(hexkey)
+	return res, err
+}
+
+func CalcNodeAddr(puk ecdsa.PublicKey) common.Address {
+	return crypto.PubkeyToAddress(puk)
+}
+
+func CalcNodeID(addr common.Address) []byte {
+	return crypto.Keccak256(addr.Bytes())
 }
