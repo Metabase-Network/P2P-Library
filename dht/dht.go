@@ -19,12 +19,14 @@ package dht
 import (
 	"container/list"
 	"sync"
+
+	"github.com/Metabase-Network/vasuki/Node"
 )
 
 // RoutingTable contains one bucket list for lookups.
 type RoutingTable struct {
 	// Current node's ID.
-	self Node.NodeID
+	self node.NodeID
 
 	buckets []*Bucket
 }
@@ -33,8 +35,4 @@ type RoutingTable struct {
 type Bucket struct {
 	*list.List
 	mutex *sync.RWMutex
-}
-
-func dht() {
-	node
 }
