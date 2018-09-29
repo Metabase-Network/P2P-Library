@@ -34,3 +34,7 @@ type Bucket struct {
 	*list.List
 	mutex *sync.RWMutex
 }
+
+func dht() {
+	node
+}
