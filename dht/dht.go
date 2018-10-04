@@ -26,7 +26,7 @@ import (
 // RoutingTable contains one bucket list for lookups.
 type RoutingTable struct {
 	// Current node's ID.
-	self node.NodeID
+	self Node.Node.NodeAddr
 
 	buckets []*Bucket
 }
@@ -35,4 +35,29 @@ type RoutingTable struct {
 type Bucket struct {
 	*list.List
 	mutex *sync.RWMutex
+}
+
+const BucketSize = 16
+
+// NewBucket is a Factory method of Bucket, contains an empty list.
+func NewBucket() *Bucket {
+	return &Bucket{
+		List:  list.New(),
+		mutex: &sync.RWMutex{},
+	}
+}
+
+// CreateRoutingTable is a Factory method of RoutingTable containing empty buckets.
+func CreateRoutingTable(id Node.Node.NodeAddr) *RoutingTable {
+	table := &RoutingTable{
+		self:    id,
+		buckets: make([]*Bucket, len(id.Id)*8),
+	}
+	for i := 0; i < len(id.Id)*8; i++ {
+		table.buckets[i] = NewBucket()
+	}
+
+	table.Update(id)
+
+	return table
 }
