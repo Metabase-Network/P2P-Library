@@ -34,6 +34,7 @@ type RoutingTable struct {
 // Bucket holds a list of contacts of this node.
 type Bucket struct {
 	*list.List
+	nde nodeDef
 	mutex *sync.RWMutex
 }
 
@@ -45,19 +46,4 @@ func NewBucket() *Bucket {
 		List:  list.New(),
 		mutex: &sync.RWMutex{},
 	}
-}
-
-// CreateRoutingTable is a Factory method of RoutingTable containing empty buckets.
-func CreateRoutingTable(id Node.Node.NodeAddr) *RoutingTable {
-	table := &RoutingTable{
-		self:    id,
-		buckets: make([]*Bucket, len(id.Id)*8),
-	}
-	for i := 0; i < len(id.Id)*8; i++ {
-		table.buckets[i] = NewBucket()
-	}
-
-	table.Update(id)
-
-	return table
 }

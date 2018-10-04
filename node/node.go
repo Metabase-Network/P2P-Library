@@ -28,7 +28,7 @@ import (
 
 var errInvalidPubkey = errors.New("Error Generating Key for Node ")
 
-//Node Struct for node
+//nodeDef Struct for node
 type nodeDef struct {
 	nodeID     []byte
 	NodeAddr   []byte
