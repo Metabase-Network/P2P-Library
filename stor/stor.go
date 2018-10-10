@@ -27,7 +27,7 @@ type S struct {
 }
 
 // start initilizes S Struct
-func start(path string) (S, error) {
+func Start(path string) (S, error) {
 	var ret S
 	db, err := leveldb.OpenFile(path, nil)
 	ret = S{StorPath: path, Stordb: db}
