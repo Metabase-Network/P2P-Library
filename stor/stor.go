@@ -26,14 +26,10 @@ type S struct {
 	Stordb   *leveldb.DB
 }
 
-// start function to initilize nodep
+// start function to initilize S
 func start(path string) (S, error) {
 	var ret S
 	db, err := leveldb.OpenFile(path, nil)
-	if err == nil {
-		ret = S{StorPath: path, Stordb: db}
-	} else {
-		ret = S{}
-	}
+	ret = S{StorPath: path, Stordb: db}
 	return ret, err
 }
