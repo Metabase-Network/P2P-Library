@@ -26,7 +26,7 @@ type S struct {
 	Stordb   *leveldb.DB
 }
 
-// start function to initilize S
+// start initilizes S Struct
 func start(path string) (S, error) {
 	var ret S
 	db, err := leveldb.OpenFile(path, nil)

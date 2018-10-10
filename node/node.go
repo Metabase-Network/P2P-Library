@@ -24,7 +24,7 @@ import (
 
 	"github.com/Metabase-Network/vasuki/common"
 	"github.com/Metabase-Network/vasuki/crypto"
-	"github.com/Metabase-Network/vasuki/nodep"
+	"github.com/Metabase-Network/vasuki/stor"
 )
 
 // nodeDef is an identity of nodes, using its public key hash and network address.
@@ -38,6 +38,7 @@ var errInvalidPubkey = errors.New("Error Generating Key for Node ")
 
 //CreateNode Is a factory function which initializes nodeDef
 func CreateNode(path string) nodeDef {
+	stor.start("test")
 	hex := nodep.start(path)
 	res, err := crypto.HexToECDSA(hex)
 	if err != nil {
