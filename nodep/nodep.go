@@ -23,11 +23,13 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 )
 
+//nodePks  struct for nodepks
 type nodePks struct {
 	StorPath string
 	Stordb   *leveldb.DB
 }
 
+//start function to initilize nodep
 func start(path string) nodePks {
 	var ret nodePks
 	db, err := leveldb.OpenFile(path, nil)
@@ -40,6 +42,7 @@ func start(path string) nodePks {
 	return ret
 }
 
+//FetchKey function to fetch keys from local storage
 func (n nodePks) fetchKey() string {
 	var ret string
 	if n.Stordb != nil {
@@ -53,7 +56,8 @@ func (n nodePks) fetchKey() string {
 	return ret
 }
 
-func (n nodePks) iskeySet() bool {
+//isKey function to check weather valid key is applied or not
+func (n nodePks) iskey() bool {
 	var ret1 bool
 	if n.Stordb != nil {
 		res, err := n.Stordb.Get([]byte("vasukiNodeKey"), nil)
@@ -72,6 +76,7 @@ func (n nodePks) iskeySet() bool {
 	return ret1
 }
 
+//setKey function to apply a key if key is not present
 func (n nodePks) setkey() bool {
 	var ret bool
 	if n.Stordb != nil {
