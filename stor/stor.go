@@ -14,35 +14,26 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package dht
+package stor
 
 import (
-	"container/list"
-	"sync"
-
-	"github.com/Metabase-Network/vasuki/node"
+	"github.com/syndtr/goleveldb/leveldb"
 )
 
-// RoutingTable contains one bucket list for lookups.
-type RoutingTable struct {
-	// Current node's ID.
-	self node.CreateNode(hex)
-
-	buckets []*Bucket
+// S  struct for S
+type S struct {
+	StorPath string
+	Stordb   *leveldb.DB
 }
 
-// Bucket holds a list of contacts of this node.
-type Bucket struct {
-	*list.List
-	mutex *sync.RWMutex
-}
-
-const BucketSize = 16
-
-// NewBucket is a Factory method of Bucket, contains an empty list.
-func NewBucket() *Bucket {
-	return &Bucket{
-		List:  list.New(),
-		mutex: &sync.RWMutex{},
+// start function to initilize nodep
+func start(path string) (error, S) {
+	var ret S
+	db, err := leveldb.OpenFile(path, nil)
+	if err == nil {
+		ret = S{StorPath: path, Stordb: db}
+	} else {
+		ret = S{}
 	}
+	return err, ret
 }

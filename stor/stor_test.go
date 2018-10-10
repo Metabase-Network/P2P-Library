@@ -14,35 +14,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package dht
+package stor
 
 import (
-	"container/list"
-	"sync"
-
-	"github.com/Metabase-Network/vasuki/node"
+	"fmt"
+	"testing"
 )
 
-// RoutingTable contains one bucket list for lookups.
-type RoutingTable struct {
-	// Current node's ID.
-	self node.CreateNode(hex)
+var testAddrHex = "970e8128ab834e8eac17ab8e3812f010678cf791"
+var testPrivHex = "289c2857d4598e37fb9647507e47a309d6133539bf21a8b9cb6df88fd5232032"
 
-	buckets []*Bucket
-}
+func TestPath(t *testing.T) {
+	path := "./testing"
+	err, n := start(path)
 
-// Bucket holds a list of contacts of this node.
-type Bucket struct {
-	*list.List
-	mutex *sync.RWMutex
-}
-
-const BucketSize = 16
-
-// NewBucket is a Factory method of Bucket, contains an empty list.
-func NewBucket() *Bucket {
-	return &Bucket{
-		List:  list.New(),
-		mutex: &sync.RWMutex{},
-	}
+	fmt.Println(err, n)
 }

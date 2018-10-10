@@ -24,69 +24,54 @@ import (
 
 	"github.com/Metabase-Network/vasuki/common"
 	"github.com/Metabase-Network/vasuki/crypto"
+	"github.com/Metabase-Network/vasuki/nodep"
 )
+
+// nodeDef is an identity of nodes, using its public key hash and network address.
+type nodeDef struct {
+	NodeID     []byte
+	NodeAddr   common.Address
+	NodePubKey ecdsa.PublicKey
+}
 
 var errInvalidPubkey = errors.New("Error Generating Key for Node ")
 
-//nodeDef Struct for node
-type nodeDef struct {
-	nodeID     []byte
-	NodeAddr   []byte
-	NodePubKey ecdsa.PublicKey
-	NodePvkKey *ecdsa.PrivateKey
-}
-
-//InitNode Initialise Node
-func InitNode(hex string) (nodeDef, error) {
-	res, err := setPrivateKey(hex)
+//CreateNode Is a factory function which initializes nodeDef
+func CreateNode(path string) nodeDef {
+	hex := nodep.start(path)
+	res, err := crypto.HexToECDSA(hex)
 	if err != nil {
-		return nodeDef{}, err
+		return nodeDef{}
 	}
-	return nodeDef{NodePvkKey: res, NodePubKey: res.PublicKey, NodeAddr: CalcNodeAddr(res.PublicKey).Bytes(), nodeID: CalcNodeID(CalcNodeAddr(res.PublicKey))}, nil
-}
-
-//setPrivateKey Sets Private Keys for the Node
-func setPrivateKey(hexkey string) (*ecdsa.PrivateKey, error) {
-	res, err := crypto.HexToECDSA(hexkey)
-	return res, err
-}
-
-//CalcNodeAddr generates NodeAddress
-func CalcNodeAddr(puk ecdsa.PublicKey) common.Address {
-	return crypto.PubkeyToAddress(puk)
-}
-
-//CalcNodeID generates NodeID
-func CalcNodeID(addr common.Address) []byte {
-	return crypto.Keccak256(addr.Bytes())
+	return nodeDef{NodePvkKey: res, NodePubKey: res.PublicKey, NodeAddr: crypto.PubkeyToAddress(res.PublicKey), NodeID: crypto.Keccak256(crypto.PubkeyToAddress(res.PublicKey).Bytes())}
 }
 
 //Equals Compares 2 Node ID
-func (node nodeDef) Equals(other []byte) bool {
-	return bytes.Equal(node.nodeID, other)
+func (id nodeDef) Equals(other []byte) bool {
+	return bytes.Equal(id.NodeID, other)
 }
 
 //XorID XOR's ID
-func (node nodeDef) XorID(other []byte) []byte {
-	result := make([]byte, len(node.nodeID))
+func (id nodeDef) XorID(other []byte) []byte {
+	result := make([]byte, len(id.NodeID))
 
-	for i := 0; i < len(node.nodeID) && i < len(other); i++ {
-		result[i] = node.nodeID[i] ^ other[i]
+	for i := 0; i < len(id.NodeID) && i < len(other); i++ {
+		result[i] = id.NodeID[i] ^ other[i]
 	}
 	return result
 }
 
 //AddressHex Converts the address to hex String
-func (node nodeDef) AddressHex() string {
-	return hex.EncodeToString(node.NodeAddr)
+func (id nodeDef) AddressHex() string {
+	return hex.EncodeToString(id.NodeAddr.Bytes())
 }
 
 //IDHex Converts the Node ID to Hex String
-func (node nodeDef) IDHex() string {
-	return hex.EncodeToString(node.nodeID)
+func (id nodeDef) IDHex() string {
+	return hex.EncodeToString(id.NodeID)
 }
 
 //ExportPvk Exports private keys in hex format
-func (node nodeDef) ExportPvk() string {
-	return hex.EncodeToString(crypto.FromECDSA(node.NodePvkKey))
+func (id nodeDef) ExportPvk() string {
+	return hex.EncodeToString(crypto.FromECDSA(id.NodePvkKey))
 }
