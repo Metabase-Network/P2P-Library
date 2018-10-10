@@ -57,3 +57,8 @@ func (s S) Has(key []byte) (bool, error) {
 func (s S) Delete(key []byte) error {
 	return s.Stordb.Delete(key, nil)
 }
+
+// Close closes the database
+func (s S) Close(key []byte) error {
+	return s.Stordb.Close()
+}

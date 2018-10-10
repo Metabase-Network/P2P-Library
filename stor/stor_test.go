@@ -17,7 +17,6 @@
 package stor
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -26,7 +25,32 @@ var testPrivHex = "289c2857d4598e37fb9647507e47a309d6133539bf21a8b9cb6df88fd5232
 
 func TestPath(t *testing.T) {
 	path := "./testing"
-	err, n := Start(path)
+	n, err := Start(path)
+	if err != nil {
+		t.Errorf("error while initialising DB")
+	} else {
+		t.Log("Init Test completed successfully")
 
-	fmt.Println(err, n)
+		putErr := n.Put([]byte("testKey"), []byte("TestValue"))
+		if putErr != nil {
+			t.Errorf("Error while storing key")
+		} else {
+			t.Log("Put Operation successfull")
+		}
+
+		val, getErr := n.Get([]byte("testKey"))
+		if getErr != nil {
+			t.Errorf("Error while Fetching key")
+		} else {
+			t.Logf("Get Operation successfull %d", val)
+		}
+
+		has, hasErr := n.Has([]byte("testKey"))
+		if hasErr != nil {
+			t.Errorf("Error while checking key %t", has)
+		} else {
+			t.Logf("Get Operation successfull %t", has)
+		}
+
+	}
 }

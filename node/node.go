@@ -38,9 +38,14 @@ var errInvalidPubkey = errors.New("Error Generating Key for Node ")
 
 //CreateNode Is a factory function which initializes nodeDef
 func CreateNode(path string) nodeDef {
-	stor.start("test")
-	hex := nodep.start(path)
-	res, err := crypto.HexToECDSA(hex)
+
+	// Gen Key -> Convert to HEX string -> Convert to
+	db, err0 := stor.Start(path)
+	key, err1 := crypto.GenerateKey()
+
+	res, err2 := crypto.HexToECDSA(key)
+	hex.EncodeToString(key)
+	crypto.FromECDSA(key)
 	if err != nil {
 		return nodeDef{}
 	}
