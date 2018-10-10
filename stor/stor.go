@@ -27,7 +27,7 @@ type S struct {
 }
 
 // start function to initilize nodep
-func start(path string) (error, S) {
+func start(path string) (S, error) {
 	var ret S
 	db, err := leveldb.OpenFile(path, nil)
 	if err == nil {
@@ -35,5 +35,5 @@ func start(path string) (error, S) {
 	} else {
 		ret = S{}
 	}
-	return err, ret
+	return ret, err
 }
