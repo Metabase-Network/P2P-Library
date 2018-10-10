@@ -26,10 +26,34 @@ type S struct {
 	Stordb   *leveldb.DB
 }
 
-// start initilizes S Struct
+// Start initilizes S Struct
 func Start(path string) (S, error) {
 	var ret S
 	db, err := leveldb.OpenFile(path, nil)
 	ret = S{StorPath: path, Stordb: db}
 	return ret, err
+}
+
+// Put Stores the keys and their respective values
+func (s S) Put(key []byte, value []byte) error {
+	return s.Stordb.Put(key, value, nil)
+}
+
+// Get Stores the keys and their respective values
+func (s S) Get(key []byte) ([]byte, error) {
+	ret, err := s.Stordb.Get(key, nil)
+	if err != nil {
+		return nil, err
+	}
+	return ret, nil
+}
+
+// Has Checks if the given key is repesent in db
+func (s S) Has(key []byte) (bool, error) {
+	return s.Stordb.Has(key, nil)
+}
+
+// Delete deletes the key from the database
+func (s S) Delete(key []byte) error {
+	return s.Stordb.Delete(key, nil)
 }
