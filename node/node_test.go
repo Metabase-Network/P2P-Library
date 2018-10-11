@@ -14,40 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package stor
+package node
 
 import (
+	"fmt"
 	"testing"
 )
 
-func TestPath(t *testing.T) {
-	path := "./testing"
-	n, err := Start(path)
-	if err != nil {
-		t.Errorf("error while initialising DB")
-	} else {
-		t.Log("Init Test completed successfully")
-
-		putErr := n.Put([]byte("testKey"), []byte("TestValue"))
-		if putErr != nil {
-			t.Errorf("Error while storing key")
-		} else {
-			t.Log("Put Operation successfull")
-		}
-
-		val, getErr := n.Get([]byte("testKey"))
-		if getErr != nil {
-			t.Errorf("Error while Fetching key")
-		} else {
-			t.Logf("Get Operation successfull %d", val)
-		}
-
-		has, hasErr := n.Has([]byte("testKey"))
-		if hasErr != nil {
-			t.Errorf("Error while checking key %t", has)
-		} else {
-			t.Logf("Get Operation successfull %t", has)
-		}
-
-	}
+func TestNode(t *testing.T) {
+	fmt.Println("test")
+	fmt.Println(Def{})
 }

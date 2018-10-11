@@ -21,6 +21,7 @@ import (
 	"crypto/ecdsa"
 	"encoding/hex"
 	"errors"
+	"math/bits"
 
 	"github.com/Metabase-Network/vasuki/common"
 	"github.com/Metabase-Network/vasuki/crypto"
@@ -74,4 +75,14 @@ func (id Def) AddressHex() string {
 //IDHex Converts the Node ID to Hex String
 func (id Def) IDHex() string {
 	return hex.EncodeToString(id.NodeID)
+}
+
+// PrefixLen returns the number of prefixed zeros in a peer Def.
+func (id Def) PrefixLen() int {
+	for i, b := range id.NodeID {
+		if b != 0 {
+			return i*8 + bits.LeadingZeros8(uint8(b))
+		}
+	}
+	return len(id.NodeID)*8 - 1
 }

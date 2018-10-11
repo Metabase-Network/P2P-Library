@@ -20,7 +20,7 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 )
 
-// S  struct for S
+// S struct for S
 type S struct {
 	StorPath string
 	Stordb   *leveldb.DB
