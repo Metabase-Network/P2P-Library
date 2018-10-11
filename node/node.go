@@ -27,8 +27,8 @@ import (
 	"github.com/Metabase-Network/vasuki/stor"
 )
 
-// nodeDef is an identity of nodes, using its public key hash and network address.
-type nodeDef struct {
+// Def is an identity of nodes, using its public key hash and network address.
+type Def struct {
 	NodeID     []byte
 	NodeAddr   common.Address
 	NodePubKey ecdsa.PublicKey
@@ -36,29 +36,28 @@ type nodeDef struct {
 
 var errInvalidPubkey = errors.New("Error Generating Key for Node ")
 
-//CreateNode Is a factory function which initializes nodeDef
-func CreateNode(path string) nodeDef {
+// CreateNode Is a factory function which initializes Def
+func CreateNode(path string) Def {
 
 	// Gen Key -> Convert to HEX string -> Convert to
 	db, err0 := stor.Start(path)
 	key, err1 := crypto.GenerateKey()
-
-	res, err2 := crypto.HexToECDSA(key)
-	hex.EncodeToString(key)
-	crypto.FromECDSA(key)
-	if err != nil {
-		return nodeDef{}
+	key1 := crypto.FromECDSA(key)
+	err3 := db.Put([]byte("NodePvk"), key1)
+	res, err2 := crypto.HexToECDSA(hex.EncodeToString(key1))
+	if (err0 != nil) || (err1 != nil) || (err2 != nil) || (err3 != nil) {
+		return Def{}
 	}
-	return nodeDef{NodePvkKey: res, NodePubKey: res.PublicKey, NodeAddr: crypto.PubkeyToAddress(res.PublicKey), NodeID: crypto.Keccak256(crypto.PubkeyToAddress(res.PublicKey).Bytes())}
+	return Def{NodePubKey: res.PublicKey, NodeAddr: crypto.PubkeyToAddress(res.PublicKey), NodeID: crypto.Keccak256(crypto.PubkeyToAddress(res.PublicKey).Bytes())}
 }
 
 //Equals Compares 2 Node ID
-func (id nodeDef) Equals(other []byte) bool {
+func (id Def) Equals(other []byte) bool {
 	return bytes.Equal(id.NodeID, other)
 }
 
 //XorID XOR's ID
-func (id nodeDef) XorID(other []byte) []byte {
+func (id Def) XorID(other []byte) []byte {
 	result := make([]byte, len(id.NodeID))
 
 	for i := 0; i < len(id.NodeID) && i < len(other); i++ {
@@ -68,16 +67,11 @@ func (id nodeDef) XorID(other []byte) []byte {
 }
 
 //AddressHex Converts the address to hex String
-func (id nodeDef) AddressHex() string {
+func (id Def) AddressHex() string {
 	return hex.EncodeToString(id.NodeAddr.Bytes())
 }
 
 //IDHex Converts the Node ID to Hex String
-func (id nodeDef) IDHex() string {
+func (id Def) IDHex() string {
 	return hex.EncodeToString(id.NodeID)
-}
-
-//ExportPvk Exports private keys in hex format
-func (id nodeDef) ExportPvk() string {
-	return hex.EncodeToString(crypto.FromECDSA(id.NodePvkKey))
 }
