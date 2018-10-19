@@ -39,14 +39,22 @@ var errInvalidPubkey = errors.New("Error Generating Key for Node ")
 
 // CreateNode Is a factory function which initializes Def
 func CreateNode(path string) Def {
-
+	var res *ecdsa.PrivateKey
+	var err error
 	// Gen Key -> Convert to HEX string -> Convert to
-	db, err0 := stor.Start(path)
-	key, err1 := crypto.GenerateKey()
-	key1 := crypto.FromECDSA(key)
-	err3 := db.Put([]byte("NodePvk"), key1)
-	res, err2 := crypto.HexToECDSA(hex.EncodeToString(key1))
-	if (err0 != nil) || (err1 != nil) || (err2 != nil) || (err3 != nil) {
+	db, err := stor.Start(path)
+	key, _ := db.Get([]byte("NodePvk"))
+	if err == nil {
+		res1, _ := crypto.HexToECDSA(hex.EncodeToString(key))
+		res = res1
+	} else {
+		key, _ := crypto.GenerateKey()
+		key1 := crypto.FromECDSA(key)
+		db.Put([]byte("NodePvk"), key1)
+		res1, _ := crypto.HexToECDSA(hex.EncodeToString(key1))
+		res = res1
+	}
+	if err != nil {
 		return Def{}
 	}
 	return Def{NodePubKey: res.PublicKey, NodeAddr: crypto.PubkeyToAddress(res.PublicKey), NodeID: crypto.Keccak256(crypto.PubkeyToAddress(res.PublicKey).Bytes())}

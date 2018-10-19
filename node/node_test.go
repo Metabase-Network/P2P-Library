@@ -22,6 +22,8 @@ import (
 )
 
 func TestNode(t *testing.T) {
+	res := CreateNode("testing")
 	fmt.Println("test")
+	fmt.Println(res)
 	fmt.Println(Def{})
 }

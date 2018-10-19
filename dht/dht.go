@@ -74,7 +74,7 @@ func (t *RoutingTable) Update(target node.Def) {
 	if len(t.self.NodeID) != len(target.NodeID) {
 		return
 	}
-
+	pat := target.XorID(t.self.NodeID)
 	bucketID := target.XorID(t.self.NodeID).PrefixLen()
 	bucket := t.Bucket(bucketID)
 
@@ -190,8 +190,7 @@ func (t *RoutingTable) FindClosestPeers(target node.Def, count int) (peers []nod
 	if len(t.self.NodeID) != len(target.NodeID) {
 		return []node.Def{}
 	}
-
-	bucketID := target.XorID(t.self).PrefixLen()
+	bucketID := target.XorID(t.self.NodeID).PrefixLen()
 	bucket := t.Bucket(bucketID)
 
 	bucket.mutex.RLock()

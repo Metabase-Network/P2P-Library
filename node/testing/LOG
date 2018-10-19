@@ -1,0 +1,26 @@
+=============== Oct 15, 2018 (IST) ===============
+10:44:28.093106 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+10:44:28.094098 db@open opening
+10:44:28.094668 version@stat F·[] S·0B[] Sc·[]
+10:44:28.095052 db@janitor F·2 G·0
+10:44:28.095088 db@open done T·966.329µs
+=============== Oct 15, 2018 (IST) ===============
+10:45:25.994455 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+10:45:25.995719 version@stat F·[] S·0B[] Sc·[]
+10:45:25.995749 db@open opening
+10:45:25.995822 journal@recovery F·1
+10:45:25.996161 journal@recovery recovering @1
+10:45:25.997017 memdb@flush created L0@2 N·1 S·152B "NodePvk,v1":"NodePvk,v1"
+10:45:25.999400 version@stat F·[1] S·152B[152B] Sc·[0.25]
+10:45:26.000654 db@janitor F·3 G·0
+10:45:26.000685 db@open done T·4.920722ms
+=============== Oct 15, 2018 (IST) ===============
+14:51:53.156484 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+14:51:53.157562 version@stat F·[1] S·152B[152B] Sc·[0.25]
+14:51:53.157591 db@open opening
+14:51:53.157664 journal@recovery F·1
+14:51:53.158078 journal@recovery recovering @3
+14:51:53.159197 memdb@flush created L0@5 N·1 S·152B "NodePvk,v3":"NodePvk,v3"
+14:51:53.159651 version@stat F·[2] S·304B[304B] Sc·[0.50]
+14:51:53.161441 db@janitor F·4 G·0
+14:51:53.161493 db@open done T·3.885951ms
