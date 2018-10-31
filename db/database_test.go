@@ -28,12 +28,12 @@ import (
 	"github.com/Metabase-Network/vasuki/db"
 )
 
-func newTestLDB() (*ethdb.LDBDatabase, func()) {
-	dirname, err := ioutil.TempDir(os.TempDir(), "ethdb_test_")
+func newTestLDB() (*db.LDBDatabase, func()) {
+	dirname, err := ioutil.TempDir(os.TempDir(), "db_test_")
 	if err != nil {
 		panic("failed to create test file: " + err.Error())
 	}
-	db, err := ethdb.NewLDBDatabase(dirname, 0, 0)
+	db, err := db.NewLDBDatabase(dirname, 0, 0)
 	if err != nil {
 		panic("failed to create test database: " + err.Error())
 	}
@@ -53,10 +53,10 @@ func TestLDB_PutGet(t *testing.T) {
 }
 
 func TestMemoryDB_PutGet(t *testing.T) {
-	testPutGet(ethdb.NewMemDatabase(), t)
+	testPutGet(db.NewMemDatabase(), t)
 }
 
-func testPutGet(db ethdb.Database, t *testing.T) {
+func testPutGet(db db.Database, t *testing.T) {
 	t.Parallel()
 
 	for _, k := range test_values {
@@ -152,10 +152,10 @@ func TestLDB_ParallelPutGet(t *testing.T) {
 }
 
 func TestMemoryDB_ParallelPutGet(t *testing.T) {
-	testParallelPutGet(ethdb.NewMemDatabase(), t)
+	testParallelPutGet(db.NewMemDatabase(), t)
 }
 
-func testParallelPutGet(db ethdb.Database, t *testing.T) {
+func testParallelPutGet(db db.Database, t *testing.T) {
 	const n = 8
 	var pending sync.WaitGroup
 
